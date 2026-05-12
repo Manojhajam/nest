@@ -9,6 +9,7 @@ import { StudentModule } from './student/student.module';
 import { BookModule } from './book/book.module';
 import { DatabaseModule } from './common/database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { NewsModule } from './news/news.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -16,7 +17,7 @@ import configuration from './config/configuration';
     envFilePath: '.env',
     isGlobal: true,
     load: [configuration]
-  }), DatabaseModule, CategoryModule, StudentModule, BookModule],
+  }), DatabaseModule, CategoryModule, StudentModule, BookModule, NewsModule],
   controllers: [AppController],
   providers: [AppService],
 
