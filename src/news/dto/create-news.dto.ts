@@ -1,5 +1,4 @@
 import { IsString } from 'class-validator';
-import { Is } from 'sequelize-typescript';
 
 export class CreateNewsDto {
   @IsString()

@@ -18,7 +18,6 @@ export class NewsService {
       .replace(/-+/g, '-');          // collapse multiple hyphens
   }
 
-  // ✅ CREATE with auto slug
   async create(createNewsDto: CreateNewsDto) {
     const title = createNewsDto.title?.trim();
     if (!title) {
