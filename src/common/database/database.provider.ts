@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { Book } from "../../book/entities/book.entity";
 import { ConfigService } from "@nestjs/config";
+import { News } from "../../news/entities/news.entity";
 
 
 export const databaseProviders = [
@@ -18,7 +19,7 @@ export const databaseProviders = [
         logging: false,
       });
 
-      sequelize.addModels([Book]);
+      sequelize.addModels([Book, News]);
 
       await sequelize.sync();
 

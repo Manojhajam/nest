@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { News } from './entities/news.entity';
+import { Not } from 'sequelize-typescript';
 
 @Injectable()
 export class NewsService {
+  constructor(@Inject('NEWS_REPOSITORY') private newsRepository: typeof News) { }
+
+
   create(createNewsDto: CreateNewsDto) {
-    return 'This action adds a new news';
+    return this.newsRepository.create(createNewsDto as any);
   }
 
   findAll() {
-    return `This action returns all news`;
+    return this.newsRepository.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} news`;
+    return this.newsRepository.findByPk(id);
   }
 
-  update(id: number, updateNewsDto: UpdateNewsDto) {
-    return `This action updates a #${id} news`;
+  async update(id: number, updateNewsDto: UpdateNewsDto) {
+    const [affectedRows] = await this.newsRepository.update(updateNewsDto, {
+      where: { id },
+    });
+
+
+    if (!affectedRows) {
+      return new NotFoundException(`News with id ${id} not found or no changes detected`);
+    }
+    if (affectedRows === 0) {
+      return {
+        success: false,
+        message: 'News not found or nothing updated',
+      };
+    }
+
+    return {
+      success: true,
+      message: 'News updated successfully',
+    };
   }
 
   remove(id: number) {
-    return `This action removes a #${id} news`;
+    return this.newsRepository.destroy({ where: { id } });
   }
 }

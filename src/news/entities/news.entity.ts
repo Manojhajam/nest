@@ -1,1 +1,31 @@
-export class News {}
+import {
+  Column,
+  DataType,
+  Table,
+  Model,
+} from "sequelize-typescript";
+
+@Table({
+  tableName: "news",
+  paranoid: true,
+})
+export class News extends Model<News> {
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  title!: string;
+
+ @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  image!: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  description!: string;
+}
