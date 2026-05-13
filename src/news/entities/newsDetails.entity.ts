@@ -17,6 +17,12 @@ export class NewsDetails extends Model<NewsDetails> {
     @BelongsTo(() => News)
     news!: News;
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+        unique: true,
+    })
+    slug!: string;
 
     @Column({
         type: DataType.TEXT,

@@ -23,8 +23,14 @@ export class NewsDetailsService {
             throw new NotFoundException('News not found');
         }
 
+        const newsDetails = news.toJSON() as News;
+
+        const slug = newsDetails.slug;
+        console.log('News Slug:', slug);
+
         return this.newsDetailsRepository.create({
             ...createNewsDetailsDto,
+            slug: slug,
         } as any);
     }
 
