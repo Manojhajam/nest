@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { News } from './entities/news.entity';
-import { Not } from 'sequelize-typescript';
+
 
 @Injectable()
 export class NewsService {
@@ -27,8 +27,9 @@ export class NewsService {
     });
 
 
+
     if (!affectedRows) {
-      return new NotFoundException(`News with id ${id} not found or no changes detected`);
+      throw new NotFoundException(`News with id ${id} not found`);
     }
     if (affectedRows === 0) {
       return {

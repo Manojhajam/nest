@@ -17,6 +17,13 @@ export class News extends Model<News> {
   })
   title!: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    unique: true,
+  })
+  slug!: string;
+
  @Column({
     type: DataType.STRING,
     allowNull: true,
