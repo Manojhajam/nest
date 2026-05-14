@@ -34,7 +34,7 @@ export class NewsController {
   remove(@Param('id') id: string) {
     return this.newsService.remove(+id);
   }
-  
+
 
   @Post(':newsId/newsDetails')
   createNewsDetail(@Param('newsId') newsId: string, @Body() createNewsDetailsDto: any) {
@@ -51,15 +51,22 @@ export class NewsController {
     return this.newsDetailService.findOne(+newsId);
   }
 
-  @Post(':newsId/comments')
-  createComment(@Param('newsId') newsId: string, @Body() createCommentsDto: CreateCommentsDto) {
-    return this.newsService.createComment({ ...createCommentsDto, newsId: +newsId });
-  }
+
 
   @Delete(':id/newsDetails')
   removeNewsDetail(@Param('id') id: string) {
     return this.newsDetailService.remove(+id);
   }
 
-  
+  @Post(':newsId/comments')
+  createComment(@Param('newsId') newsId: string, @Body() createCommentsDto: CreateCommentsDto) {
+    return this.newsService.createComment(+newsId, createCommentsDto);
+  }
+
+  @Get(':newsId/comments')
+  findAllCommentsById(@Param('newsId') newsId: string) {
+    return this.newsService.findAllCommentsById(+newsId);
+  }
+
+
 }

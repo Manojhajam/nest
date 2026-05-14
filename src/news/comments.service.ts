@@ -11,25 +11,6 @@ export class CommentsService {
         @Inject('NEWS_REPOSITORY') private newsRepository: typeof News
     ) { }
 
-    async create(createCommentsDto: CreateCommentsDto) {
-
-        const newsId = createCommentsDto.newsId;
-        try {
-
-            const news = await this.newsRepository.findByPk(newsId);
-            if (!news) {
-                throw new NotFoundException('News not found');
-            }
-            const comments = await this.commentsRepository.create({
-                ...createCommentsDto,
-            } as any);
-
-            return comments;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    }
 
     findAll() {
         return this.commentsRepository.findAll();

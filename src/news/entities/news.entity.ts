@@ -4,8 +4,10 @@ import {
   Table,
   Model,
   HasOne,
+  HasMany,
 } from "sequelize-typescript";
 import { NewsDetails } from "./newsDetails.entity";
+import { Comments } from "./comments.entity";
 
 
 @Table({
@@ -41,4 +43,8 @@ export class News extends Model<News> {
 
   @HasOne(() => NewsDetails)
   newsDetails!: NewsDetails;
+
+  @HasMany(() => Comments)
+  comments!: Comments[];
+  
 }

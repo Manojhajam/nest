@@ -39,13 +39,25 @@ export class NewsService {
     return news;
   }
 
-  findAll() {
-    return this.newsRepository.findAll();
+  async findAll() {
+
+    const result = await this.newsRepository.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+    return result;
   }
 
   findOne(id: number) {
     return this.newsRepository.findByPk(id, {
-      include: [NewsDetails],
+      include: [{
+        model: NewsDetails,
+        attributes: ['content','slug','meta_title','meta_description']
+      },
+      {
+        model: Comments,
+        attributes: ['id', 'username', 'content']
+      }
+    ],
     });
   }
 
@@ -69,8 +81,7 @@ export class NewsService {
     return this.newsRepository.destroy({ where: { id } });
   }
 
-  async createComment(createCommentsDto: CreateCommentsDto) {
-    const newsId = createCommentsDto.newsId;
+  async createComment(newsId: number, createCommentsDto: CreateCommentsDto) {
     if (!newsId) {
       throw new BadRequestException('News ID is required');
     }
@@ -80,12 +91,21 @@ export class NewsService {
       throw new BadRequestException('News not found');
     }
 
+    const username = createCommentsDto.username || "You";
+
     const comment = await this.commentsRepository.create({
       ...createCommentsDto,
       newsId: +newsId,
+      username,
     } as any);
 
     return comment;
+  }
+
+  async findAllCommentsById(newsId: number) {
+    return this.commentsRepository.findAll({
+      where: { newsId },
+    });
   }
 
 }
