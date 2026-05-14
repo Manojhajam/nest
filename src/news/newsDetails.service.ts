@@ -46,7 +46,7 @@ export class NewsDetailsService {
         return this.newsDetailsRepository.findAll();
     }
 
-    findOne(newsId: string) {
+    findOne(newsId: number) {
         return this.newsDetailsRepository.findOne({ where: { newsId } });
     }
 

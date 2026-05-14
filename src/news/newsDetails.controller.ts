@@ -21,6 +21,6 @@ constructor(private readonly newsDetailsService: NewsDetailsService) {}
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.newsDetailsService.findOne(id);
+        return this.newsDetailsService.findOne(+id);
     }
 }

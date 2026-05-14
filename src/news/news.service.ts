@@ -4,12 +4,13 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 import { News } from './entities/news.entity';
 import { CreateCommentsDto } from './dto/create-comments.dto';
 import { Comments } from './entities/comments.entity';
+import { NewsDetails } from './entities/newsDetails.entity';
 
 
 @Injectable()
 export class NewsService {
   constructor(@Inject('NEWS_REPOSITORY') private newsRepository: typeof News,
-  @Inject('COMMENTS_REPOSITORY') private commentsRepository: typeof Comments) { }
+  @Inject('COMMENTS_REPOSITORY') private commentsRepository: typeof Comments, @Inject('NEWS_DETAILS_REPOSITORY') private newsDetailsRepository: typeof NewsDetails) { }
 
 
   private generateSlug(title: string): string {
@@ -43,8 +44,12 @@ export class NewsService {
   }
 
   findOne(id: number) {
-    return this.newsRepository.findByPk(id);
+    return this.newsRepository.findByPk(id, {
+      include: [NewsDetails],
+    });
   }
+
+
   async update(id: number, updateNewsDto: UpdateNewsDto) {
     const [affectedRows] = await this.newsRepository.update(updateNewsDto, {
       where: { id },
