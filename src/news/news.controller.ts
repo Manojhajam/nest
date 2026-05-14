@@ -47,8 +47,23 @@ export class NewsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNewsDto: UpdateNewsDto) {
-    return this.newsService.update(+id, updateNewsDto);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/news',
+        filename: (req, file, callback) => {
+          const uniqueName = Date.now() + extname(file.originalname);
+          callback(null, uniqueName);
+        },
+      }),
+    }),
+  )
+  update(
+    @Param('id') id: string,
+    @UploadedFile() file: any,
+    @Body() updateNewsDto: UpdateNewsDto,
+  ) {
+    return this.newsService.update(+id, updateNewsDto, file);
   }
 
   @Delete(':id')

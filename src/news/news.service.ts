@@ -72,10 +72,18 @@ export class NewsService {
   }
 
 
-  async update(id: number, updateNewsDto: UpdateNewsDto) {
-    const [affectedRows] = await this.newsRepository.update(updateNewsDto, {
+  async update(id: number, updateNewsDto: UpdateNewsDto, file?: any) {
+    const imagePath = file ? `/uploads/news/${file.filename}` : updateNewsDto.image;
+
+    const [affectedRows] = await this.newsRepository.update(
+      {
+        ...updateNewsDto,
+        ...(imagePath ? { image: imagePath } : {}),
+      },
+      {
       where: { id },
-    });
+      },
+    );
 
     if (affectedRows === 0) {
       throw new NotFoundException(`News with id ${id} not found`);
