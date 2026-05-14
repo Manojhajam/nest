@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { CreateCommentsDto, } from "./dto/create-comments.dto";
+import { get } from "https";
 
 @Controller('comments')
 export class CommentsController {
@@ -10,6 +11,25 @@ export class CommentsController {
     @Post()
     create(@Body() createCommentsDto: CreateCommentsDto) {
         return this.commentsService.create(createCommentsDto);
+    }
+    @Get()
+    findAll() {
+        return this.commentsService.findAll();
+    }
+
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.commentsService.findOne(+id);
+    }
+
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateCommentsDto: CreateCommentsDto) {
+        return this.commentsService.update(+id, updateCommentsDto);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.commentsService.remove(+id);
     }
 
 }

@@ -2,11 +2,14 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { News } from './entities/news.entity';
+import { CreateCommentsDto } from './dto/create-comments.dto';
+import { Comments } from './entities/comments.entity';
 
 
 @Injectable()
 export class NewsService {
-  constructor(@Inject('NEWS_REPOSITORY') private newsRepository: typeof News) { }
+  constructor(@Inject('NEWS_REPOSITORY') private newsRepository: typeof News,
+  @Inject('COMMENTS_REPOSITORY') private commentsRepository: typeof Comments) { }
 
 
   private generateSlug(title: string): string {
@@ -42,22 +45,43 @@ export class NewsService {
   findOne(id: number) {
     return this.newsRepository.findByPk(id);
   }
-async update(id: number, updateNewsDto: UpdateNewsDto) {
-  const [affectedRows] = await this.newsRepository.update(updateNewsDto, {
-    where: { id },
-  });
+  async update(id: number, updateNewsDto: UpdateNewsDto) {
+    const [affectedRows] = await this.newsRepository.update(updateNewsDto, {
+      where: { id },
+    });
 
-  if (affectedRows === 0) {
-    throw new NotFoundException(`News with id ${id} not found`);
+    if (affectedRows === 0) {
+      throw new NotFoundException(`News with id ${id} not found`);
+    }
+
+    return {
+      success: true,
+      message: 'News updated successfully',
+    };
   }
-
-  return {
-    success: true,
-    message: 'News updated successfully',
-  };
-}
 
   remove(id: number) {
     return this.newsRepository.destroy({ where: { id } });
   }
+
+  async createComment(createCommentsDto: CreateCommentsDto) {
+    const newsId = createCommentsDto.newsId;
+    if (!newsId) {
+      throw new BadRequestException('News ID is required');
+    }
+
+    const news = await this.newsRepository.findByPk(newsId);
+    if (!news) {
+      throw new BadRequestException('News not found');
+    }
+
+    const comment = await this.commentsRepository.create({
+      ...createCommentsDto,
+      newsId: +newsId,
+    } as any);
+
+    return comment;
+  }
+
 }
+

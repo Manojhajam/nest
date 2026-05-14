@@ -30,4 +30,34 @@ export class CommentsService {
             throw error;
         }
     }
+
+    findAll() {
+        return this.commentsRepository.findAll();
+    }
+
+    findOne(id: number) {
+        return this.commentsRepository.findByPk(id);
+    }
+    async update(id: number, updateCommentsDto: CreateCommentsDto) {
+        const [affectedRows] = await this.commentsRepository.update(updateCommentsDto, {
+            where: { id },
+        });
+        if (affectedRows === 0) {
+            throw new NotFoundException(`News with id ${id} not found`);
+        }
+
+        return {
+            success: true,
+            message: 'News updated successfully',
+        };
+    }
+
+    remove(id: number) {
+        const result = this.commentsRepository.destroy({ where: { id } });
+        return {
+            success: true,
+            message: `Comment with id ${id} deleted successfully`,
+        };
+    }
+
 }
