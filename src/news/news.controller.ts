@@ -1,19 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { CreateCommentsDto } from './dto/create-comments.dto';
-import { CommentsService } from './comments.service';
 import { NewsDetailsService } from './newsDetails.service';
+
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
 
 @Controller('news')
 export class NewsController {
-  constructor(private readonly newsService: NewsService, private readonly commentsService: CommentsService, private readonly newsDetailService: NewsDetailsService) { }
+  constructor(private readonly newsService: NewsService, private readonly newsDetailService: NewsDetailsService) { }
 
   @Post()
-  create(@Body() createNewsDto: CreateNewsDto) {
-    return this.newsService.create(createNewsDto);
-  }
+
+   @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/news',
+
+        filename: (req, file, callback) => {
+          const uniqueName =
+            Date.now() + extname(file.originalname);
+
+          callback(null, uniqueName);
+        },
+      }),
+    }),
+  )
+ create(
+  @UploadedFile() file: any,
+  @Body() createNewsDto: CreateNewsDto,
+) {
+  return this.newsService.create(createNewsDto, file);
+}
 
   @Get()
   findAll() {

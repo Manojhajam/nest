@@ -4,11 +4,11 @@ import { NewsController } from './news.controller';
 import { newsProvider } from './news.provider';
 import { NewsDetailsController } from './newsDetails.controller';
 import { NewsDetailsService } from './newsDetails.service';
-import { CommentsService } from './comments.service';
+
 
 
 @Module({
   controllers: [NewsController, NewsDetailsController],
-  providers: [NewsService, NewsDetailsService,CommentsService, ...newsProvider],
+  providers: [NewsService, NewsDetailsService, ...newsProvider],
 })
 export class NewsModule {}

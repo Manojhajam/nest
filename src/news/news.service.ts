@@ -22,18 +22,28 @@ export class NewsService {
       .replace(/-+/g, '-');          // collapse multiple hyphens
   }
 
-  async create(createNewsDto: CreateNewsDto) {
+  async create(createNewsDto: CreateNewsDto, file?: any) {
     const title = createNewsDto.title?.trim();
     if (!title) {
       throw new BadRequestException('title is required');
     }
 
+    if (!file) {
+  throw new BadRequestException('Image is required');
+}
+
     const slug = this.generateSlug(`${title}+${Date.now()}`);
+
+
+    const imagePath = file
+    ? `/uploads/news/${file.filename}`
+    : null;
 
     const news = await this.newsRepository.create({
       ...createNewsDto,
       title,
       slug,
+      image: imagePath,
     } as any);
 
     return news;
@@ -77,8 +87,15 @@ export class NewsService {
     };
   }
 
-  remove(id: number) {
-    return this.newsRepository.destroy({ where: { id } });
+  async remove(id: number) {
+    const result = await this.newsRepository.destroy({ where: { id } });
+    if (result === 0) {
+      throw new NotFoundException(`News with id ${id} not found`);
+    }
+    return {
+      success: true,
+      message: 'News deleted successfully',
+    };
   }
 
   async createComment(newsId: number, createCommentsDto: CreateCommentsDto) {
