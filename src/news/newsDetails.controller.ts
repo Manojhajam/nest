@@ -4,15 +4,15 @@ import { NewsService } from './news.service';
 import { NewsDetailsService } from './newsDetails.service';
 
 
-@Controller('news-details')
+@Controller('/news/news-details')
 export class NewsDetailsController {
 constructor(private readonly newsDetailsService: NewsDetailsService) {}
 
-    @Post()
-    create(@Body() CreateNewsDetailsDto: CreateNewsDetailsDto) {
+    // @Post()
+    // create(@Body() CreateNewsDetailsDto: CreateNewsDetailsDto) {
 
-     return this.newsDetailsService.create(CreateNewsDetailsDto);
-    }
+    //  return this.newsDetailsService.create(CreateNewsDetailsDto);
+    // }
 
     @Get()
     findAll() {

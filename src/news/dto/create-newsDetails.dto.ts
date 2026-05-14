@@ -1,8 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreateNewsDetailsDto {
-    @IsNumber()
-    newsId: number | undefined;
 
     @IsString()
     content: string | undefined;

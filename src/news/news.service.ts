@@ -27,7 +27,7 @@ export class NewsService {
       throw new BadRequestException('title is required');
     }
 
-    const slug = this.generateSlug(title);
+    const slug = this.generateSlug(`title+${Date.now()}`);
 
     const news = await this.newsRepository.create({
       ...createNewsDto,

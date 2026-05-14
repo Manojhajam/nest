@@ -17,12 +17,27 @@ export class NewsController {
 
   @Post(':newsId/newsDetails')
   createNewsDetail(@Param('newsId') newsId: string, @Body() createNewsDetailsDto: any) {
-    return this.newsDetailService.create({ ...createNewsDetailsDto, newsId: +newsId });
+    return this.newsDetailService.create(+newsId, { ...createNewsDetailsDto, newsId: +newsId });
+  }
+
+  @Get('newsDetails')
+  findAllNewsDetails() {
+    return this.newsDetailService.findAll();
+  }
+
+  @Get(':newsId/newsDetails')
+  findNewsDetail(@Param('newsId') newsId: string) {
+    return this.newsDetailService.findOne(newsId);
   }
 
   @Post(':newsId/comments')
   createComment(@Param('newsId') newsId: string, @Body() createCommentsDto: CreateCommentsDto) {
     return this.newsService.createComment({ ...createCommentsDto, newsId: +newsId });
+  }
+
+  @Delete(':id/newsDetails')
+  removeNewsDetail(@Param('id') id: string) {
+    return this.newsDetailService.remove(+id);
   }
 
   @Get()

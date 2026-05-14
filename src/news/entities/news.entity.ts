@@ -3,7 +3,10 @@ import {
   DataType,
   Table,
   Model,
+  HasOne,
 } from "sequelize-typescript";
+import { NewsDetails } from "./newsDetails.entity";
+
 
 @Table({
   tableName: "news",
@@ -24,7 +27,7 @@ export class News extends Model<News> {
   })
   slug!: string;
 
- @Column({
+  @Column({
     type: DataType.STRING,
     allowNull: true,
   })
@@ -35,4 +38,7 @@ export class News extends Model<News> {
     allowNull: true,
   })
   description!: string;
+
+  @HasOne(() => NewsDetails)
+  newsDetails!: NewsDetails;
 }
