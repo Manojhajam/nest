@@ -5,9 +5,6 @@ export class CreateNewsDto {
   title: string | undefined;
 
   @IsString()
-  slug: string | undefined;
-
-  @IsString()
   image: string | undefined;
 
   @IsString()
