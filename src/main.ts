@@ -23,8 +23,7 @@ app.useGlobalPipes(new ValidationPipe({
     const allowedOrigins = [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://news-by-manoj.netlify.app/',
-      'https://news-by-manoj.netlify.app/*',
+      'https://news-by-manoj.netlify.app',
     ];
 
     if (allowedOrigins.includes(origin)) {
