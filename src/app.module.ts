@@ -3,13 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 
-import { CategoryModule } from './category/category.module';
-import { StudentModule } from './student/student.module';
+
 // import { CustomerModule } from './customer/customer.module';
-import { BookModule } from './book/book.module';
+
 import { DatabaseModule } from './common/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { NewsModule } from './news/news.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -17,7 +17,7 @@ import configuration from './config/configuration';
     envFilePath: '.env',
     isGlobal: true,
     load: [configuration]
-  }), DatabaseModule, CategoryModule, StudentModule, BookModule, NewsModule],
+  }), DatabaseModule,NewsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 
