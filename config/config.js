@@ -11,6 +11,12 @@ let options = {
     dialect: 'postgres',
     port: process.env.DB_PORT,
     logging: true,
+    dialectOptions: {
+      ssl: process.env.DB_SSL === 'true' ? {
+        require: true,
+        rejectUnauthorized: false,
+      } : false,
+    },
   },
 };
 

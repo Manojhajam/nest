@@ -19,6 +19,10 @@ export const databaseProviders = [
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         logging: false,
+        dialectOptions: {
+          ssl: process.env.DB_SSL === 'true',
+          native: true,
+        }
       });
 
       sequelize.addModels([Book, News, NewsDetails, Comments]);
