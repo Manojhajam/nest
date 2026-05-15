@@ -10,6 +10,7 @@ import { DatabaseModule } from './common/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { NewsModule } from './news/news.module';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -17,7 +18,8 @@ import configuration from './config/configuration';
     envFilePath: '.env',
     isGlobal: true,
     load: [configuration]
-  }), DatabaseModule,NewsModule, AuthModule],
+  }), 
+  DatabaseModule,NewsModule, AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 

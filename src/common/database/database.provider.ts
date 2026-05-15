@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { News } from "../../news/entities/news.entity";
 import { NewsDetails } from "../../news/entities/newsDetails.entity";
 import { Comments } from "../../news/entities/comments.entity";
+import { Users } from "../../user/entities/user.entity";
 
 
 export const databaseProviders = [
@@ -24,7 +25,7 @@ export const databaseProviders = [
         }
       });
 
-      sequelize.addModels([News, NewsDetails, Comments]);
+      sequelize.addModels([News, NewsDetails, Comments, Users]);
 
       await sequelize.sync();
 
