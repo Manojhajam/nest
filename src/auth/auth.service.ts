@@ -56,8 +56,8 @@ export class AuthService {
         }
 
         const payload = {
-            id: user.id,
-            email: user.email,
+            id: userJson.id,
+            email: userJson.email,
         };
 
         const access_token =
